@@ -1,4 +1,4 @@
-package center.init.demo.configuration
+package center.init.demo.common.configuration
 
 import com.fasterxml.jackson.databind.Module
 import org.ktorm.database.Database

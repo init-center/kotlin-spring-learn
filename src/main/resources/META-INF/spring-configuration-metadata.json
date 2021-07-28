@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "demo.controller-package",
+      "type": "java.lang.String",
+      "description": "package path of controller."
+    }
+  ]
+}
