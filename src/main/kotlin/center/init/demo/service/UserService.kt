@@ -1,6 +1,7 @@
 package center.init.demo.service
 
 import center.init.demo.dao.UserDao
+import center.init.demo.dto.CreateUserDto
 import center.init.demo.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -9,5 +10,9 @@ import org.springframework.stereotype.Service
 class UserService constructor(@Autowired var userDao: UserDao) {
     fun getUser(id: Int): User? {
         return userDao.getUserById(id)
+    }
+
+    fun createUser(createUserDto: CreateUserDto): Int {
+        return userDao.createUser(createUserDto)
     }
 }

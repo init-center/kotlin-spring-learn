@@ -1,7 +1,6 @@
 package center.init.demo.common.exception
 
 import center.init.demo.common.exception.exceptions.HttpException
-import center.init.demo.common.exception.exceptions.NotFoundHttpException
 import center.init.demo.common.response.Response
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -26,20 +25,10 @@ class GlobalExceptionInterceptor {
     fun handleHttpException(request: HttpServletRequest, e: HttpException): ResponseEntity<Response<Nothing?>> {
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
-        var httpStatus = HttpStatus.resolve(200)
-
-        if(e is NotFoundHttpException) {
-            httpStatus = HttpStatus.resolve(400)
-            return ResponseEntity<Response<Nothing?>>(
-                Response(4000, e.message, request.method, request.requestURI, null),
-                headers,
-                httpStatus!!
-            )
-        }
         return ResponseEntity<Response<Nothing?>>(
-            Response(4001, e.message, request.method, request.requestURI, null),
+            Response(e.code, e.message, request.method, request.requestURI, null),
             headers,
-            httpStatus!!
+            e.httpCode
         )
     }
 }
