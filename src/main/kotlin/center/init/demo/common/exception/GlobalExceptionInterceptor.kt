@@ -6,11 +6,13 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import javax.servlet.http.HttpServletRequest
+import javax.validation.ConstraintViolationException
 
 @ControllerAdvice
 class GlobalExceptionInterceptor {
@@ -30,5 +32,21 @@ class GlobalExceptionInterceptor {
             headers,
             e.httpCode
         )
+    }
+
+    @ExceptionHandler(value = [MethodArgumentNotValidException::class])
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    fun handleBodyNotValidException(request: HttpServletRequest, e: MethodArgumentNotValidException):Response<Nothing?> {
+        val message = e.bindingResult.allErrors.map { it.defaultMessage }.reduce{acc,cur -> "$acc;$cur"}
+        return Response(4022, message ?: "参数错误", request.method, request.requestURI, null)
+    }
+
+    @ExceptionHandler(value = [ConstraintViolationException::class])
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    fun handleUrlNotValidException(request: HttpServletRequest, e: ConstraintViolationException):Response<Nothing?> {
+        val message = e.localizedMessage.split(",").joinToString(";") { it -> it.split(":")[1] }
+        return Response(4022, message, request.method, request.requestURI, null)
     }
 }

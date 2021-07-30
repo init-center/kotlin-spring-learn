@@ -25,6 +25,7 @@ dependencies {
     implementation("org.ktorm:ktorm-jackson:3.4.1")
     implementation("org.ktorm:ktorm-support-mysql:3.4.1")
     implementation("mysql:mysql-connector-java:8.0.13")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
