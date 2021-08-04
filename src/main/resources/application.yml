@@ -6,3 +6,9 @@ spring:
 
 demo:
   controller-package: center.init.demo.controller
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
