@@ -3,6 +3,10 @@ spring:
     url: jdbc:mysql://localhost:3306/study?characterEncoding=UTF-8&&useSSL=false&serverTimezone=GMT%2B8&useUnicode=true
     username: root
     password: mysqlroot
+  security:
+    user:
+      name: user
+      password: 123456
 
 demo:
   controller-package: center.init.demo.controller
