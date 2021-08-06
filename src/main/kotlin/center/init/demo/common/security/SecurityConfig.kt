@@ -1,15 +1,14 @@
 package center.init.demo.common.security
 
-// 使用了 kotlin DSL 来编写 security config 必须引入这个
-// 现在的kotlin和idea有点问题，不会自动引入，也不会提示引入，需要自己手动引入
+import center.init.demo.common.response.Response
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpStatus
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.web.servlet.invoke
+import org.springframework.security.config.web.servlet.invoke // 使用了 kotlin DSL 来编写 security config 必须引入这个(invoke)，现在的kotlin和idea有点问题，不会自动引入，也不会提示引入，需要自己手动引入
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -36,7 +35,6 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
             .roles("USER")
     }
 
-    @Bean
     fun passwordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
     }
@@ -121,7 +119,8 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
             exception: AuthenticationException
         ) {
             response.contentType = "application/json;charset=utf-8"
-            response.writer.println(ObjectMapper().writeValueAsString(exception))
+            response.status = HttpStatus.BAD_REQUEST.value()
+            response.writer.println(ObjectMapper().writeValueAsString(Response(2000, "认证失败", request.method, request.requestURI, null)))
         }
 
     }
